@@ -4,7 +4,7 @@
     "description": "Create a Simple logger using nodejs file stream",
     "main": "logger.js",
     "scripts": {
-        "start": "node example/app.js"
+        "start": "node example/app"
     },
     "keywords": [],
     "author": "ranjithm",
