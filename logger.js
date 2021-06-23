@@ -63,7 +63,14 @@ class Logger {
         try {
             if (!this.writeStream)
                 this.writeStream = createWriteStream(this.fileName, { 'flags': 'a' })
-            this.writeStream.write(Object.values(data) + "\n")
+            if (typeof data === 'object') {
+                let writeDate = Array.isArray(data) ? data : Object.values(data)
+                writeDate.map((d) => {
+                    this.writeStream.write(`${d}   `)
+                })
+                this.writeStream.write(`   \n`)
+            } else
+                this.writeStream.write(data + "\n")
         } catch (error) {
             console.error(error);
         }
