@@ -1,4 +1,4 @@
-const { mkdir, writeFileSync, accessSync, access, createWriteStream, constants: { F_OK, W_OK } } = require("fs")
+const { mkdir, writeFileSync, accessSync, access, createWriteStream, promises, constants: { F_OK, W_OK } } = require("fs")
 
 class Logger {
     constructor(dir = '', prefix = 'logger', ext = 'log', header = "") {
@@ -31,7 +31,7 @@ class Logger {
         return this.fileName
     }
 
-    checkFileExists(file) {
+    checkFileExists1(file) {
         try {
             accessSync(file, F_OK);
             return true
@@ -40,6 +40,12 @@ class Logger {
             return false
         }
     }
+
+    checkFileExists(file) {
+        return promises.access(file, F_OK)
+                 .then(() => true)
+                 .catch(() => false)
+      }
 
     checkFileAccess() {
         try {
@@ -66,7 +72,7 @@ class Logger {
             if (typeof data === 'object') {
                 let writeDate = Array.isArray(data) ? data : Object.values(data)
                 writeDate.map((d) => {
-                    this.writeStream.write(`${d}   `)
+                    this.writeStream.write(`${d}        `)
                 })
                 this.writeStream.write(`   \n`)
             } else
@@ -85,11 +91,17 @@ class Logger {
             this.fileName = this.getFilePath()
             if (this.writeStream)
                 this.writeStream.close()
-            if (!this.checkFileExists(this.fileName)) {
-                this.writeLog()
-                if (this.header) this.appendLog(this.header)
-            }
-            this.appendLog(arguments)
+            // if (!this.checkFileExists(this.fileName)) {
+                // this.writeLog()
+                // if (this.header) this.appendLog(this.header)
+            // }
+            this.checkFileExists(this.fileName).then((d) => {
+                if (!d) {
+                    this.writeLog()
+                    if (this.header) this.appendLog(this.header)
+                }
+                this.appendLog(arguments)
+            })
         }
     }
 }

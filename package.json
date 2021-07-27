@@ -1,12 +1,20 @@
 {
     "name": "@ranjithm/simple-logger",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Create a Simple logger using nodejs file stream",
     "main": "logger.js",
     "scripts": {
         "start": "node example/app"
     },
-    "keywords": [],
+    "keywords": [
+        "log",
+        "logger",
+        "nodejs",
+        "logging",
+        "fs logger",
+        "node logger",
+        "simple logger"
+    ],
     "author": "ranjithm",
     "license": "MIT",
     "repository": {
